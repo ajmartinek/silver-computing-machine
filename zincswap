@@ -1,0 +1,59 @@
+pragma solidity ^0.6.0;
+
+// Import the ERC-20 interface
+import "https://github.com/OpenZeppelin/openzeppelin-solidity/blob/release-v3.1.0/contracts/token/ERC20/ERC20.sol";
+
+// Import the SafeMath library
+import "https://github.com/OpenZeppelin/openzeppelin-solidity/blob/release-v3.1.0/contracts/math/SafeMath.sol";
+
+// Import the address utility library
+import "https://github.com/OpenZeppelin/openzeppelin-solidity/blob/release-v3.1.0/contracts/utils/Address.sol";
+
+// Import the ERC-165 interface
+import "https://github.com/OpenZeppelin/openzeppelin-solidity/blob/release-v3.1.0/contracts/interfaces/ERC165.sol";
+
+// Import the IERC20 interface
+import "https://github.com/OpenZeppelin/openzeppelin-solidity/blob/release-v3.1.0/contracts/token/ERC20/IERC20.sol";
+
+// Import the Ownable contract
+import "https://github.com/OpenZeppelin/openzeppelin-solidity/blob/release-v3.1.0/contracts/ownership/Ownable.sol";
+
+// Import the ERC-1155 contract
+import "https://github.com/OpenZeppelin/openzeppelin-solidity/blob/release-v3.1.0/contracts/token/ERC1155/ERC1155.sol";
+
+// Import the ReentrancyGuard contract
+import "https://github.com/OpenZeppelin/openzeppelin-solidity/blob/release-v3.1.0/contracts/security/ReentrancyGuard.sol";
+
+/**
+ * @title ZincSwap
+ * @dev ZincSwap is a peer-to-peer ERC-20 token exchange platform on the Ethereum blockchain.
+ */
+contract ZincSwap is Ownable, ReentrancyGuard, ERC1155 {
+  using SafeMath for uint256;
+  using Address for address;
+
+  // Mapping of tokens to their balances
+  mapping(address => mapping(address => uint256)) public tokenBalances;
+
+  // Mapping of token addresses to their metadata
+  mapping(address => ERC1155Metadata) public metadata;
+
+  // The ZincSwap smart contract address
+  address public zincSwapAddress;
+
+  /**
+   * @dev Constructor that sets the initial values for the contract
+   * and sets the smart contract address.
+   */
+  constructor() public {
+    zincSwapAddress = address(this);
+  }
+
+  /**
+   * @dev Function to register a new ERC-20 token on the ZincSwap platform.
+   * @param token The address of the ERC-20 token to be registered.
+   * @param name The name of the ERC-20 token.
+   * @param symbol The symbol of the ERC-20 token.
+   */
+  function registerToken(address token, string memory name, string memory symbol) public onlyOwner {
+    // Check
